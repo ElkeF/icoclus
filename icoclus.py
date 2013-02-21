@@ -60,11 +60,6 @@ def vec2str(vec):
 
 ####################### Programme ##################################
 
-testvec = np.array([2,5,3])
-avec    = np.array([1,4,2.5])
-
-sp      = np.vdot(testvec,avec)
-norm    = np.linalg.norm(avec)
 
 ##################################
 #####  Build the core icosahedra #
@@ -103,13 +98,20 @@ for i in range (2,n_core+1):
         normkante = (vec2-vec1) / np.linalg.norm(vec2-vec1)
         normlauf  = (vec3-vec2) / np.linalg.norm(vec3-vec2)
 
-        for k in range (1,i-1):
-            kantatom = vec1 + i * normkante * 2 * rcore
-            latest = np.vstack((latest,kantatom))
-            
-            for l in range (1,k):
-                flatom = kantatom + k * normlauf * 2 * rcore
-                latest = np.vstack((latest,flatom))
+        if (i > 2):
+
+            for k in range (1,i):
+                kantatom = vec1 + (k * normkante * 2 * rcore)
+                latest = np.vstack((latest,kantatom))
+#                print vec1
+#                print kantatom
+                
+                for l in range (1,k+1):
+                    flatom = kantatom + l * normlauf * 2 * rcore
+                    latest = np.vstack((latest,flatom))
+                    print kantatom
+                    print normlauf
+                    print flatom
 
 #    print latest
     coords = np.vstack((coords,latest))
