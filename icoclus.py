@@ -17,14 +17,14 @@ atouter = 'Ar' # atomtype of the outer shells
 rcore =  2.16 # radius of core atoms 
 router = 2.07 # radius of outer shell atoms
 
-n_core = 3 #number of atoms for the longest edge
+n_core = 4 #number of atoms for the longest edge
 n_outer = 0
 
 ################## Definitions #####################################
 
 phi = (1 + math.sqrt(5))/2
 
-thres = 1e-6
+thres = 1e-12
 
 # Definition of the surfaces
 surf1  = np.array([ 1, 2,11])
@@ -101,10 +101,13 @@ for i in range (2,n_core+1):
     latest = ecken
 #    print latest
 
-    for j in range (0,20):
+    for j in range (0,19):
         vec1 = ecken[surfaces[j,0] -1]
         vec2 = ecken[surfaces[j,1] -1]
         vec3 = ecken[surfaces[j,2] -1]
+
+        #print j+1
+        #print surfaces[j,0], surfaces[j,1], surfaces[j,2]
 
 #        print ' '.join(map(str, vec1))
 #        print ' '.join(map(str, vec2))
@@ -123,6 +126,7 @@ for i in range (2,n_core+1):
                 for l in range (1,k+1):
                     flatom = kantatom + l * normlauf * 2 * rcore
                     latest = np.vstack((latest,flatom))
+                    #print kantatom
 
 
 # Entferne Duplikate innerhalb der Liste
@@ -130,8 +134,9 @@ for i in range (2,n_core+1):
 
 
     coords = np.vstack((coords,unique))
+
 # Entferne weitere Duplikate
-    coords = unique_rows(coords)
+#    coords = unique_rows(coords)
 
 #########################################
 # Write Output
