@@ -24,6 +24,8 @@ n_outer = 0
 
 phi = (1 + math.sqrt(5))/2
 
+thres = 1e-6
+
 # Definition of the surfaces
 surf1  = np.array([ 1, 2,11])
 surf2  = np.array([ 1, 2, 9])
@@ -58,6 +60,18 @@ coords  = central
 def vec2str(vec):
     return "   ".join([str(v) for v in vec])
 
+#def unique_rows(a):
+#    unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
+#    return unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
+
+def unique_rows(a):
+    order = np.lexsort(a.T)
+    a = a[order]
+    diff = np.diff(a, axis=0)
+    ui = np.ones(len(a), 'bool')
+    ui[1:] = (diff > thres).any(axis=1) 
+    return a[ui]
+
 ####################### Programme ##################################
 
 
@@ -87,7 +101,7 @@ for i in range (2,n_core+1):
     latest = ecken
 #    print latest
 
-    for j in range (0,19):
+    for j in range (0,20):
         vec1 = ecken[surfaces[j,0] -1]
         vec2 = ecken[surfaces[j,1] -1]
         vec3 = ecken[surfaces[j,2] -1]
@@ -109,12 +123,15 @@ for i in range (2,n_core+1):
                 for l in range (1,k+1):
                     flatom = kantatom + l * normlauf * 2 * rcore
                     latest = np.vstack((latest,flatom))
-                    print kantatom
-                    print normlauf
-                    print flatom
 
-#    print latest
-    coords = np.vstack((coords,latest))
+
+# Entferne Duplikate innerhalb der Liste
+    unique = unique_rows(latest)
+
+
+    coords = np.vstack((coords,unique))
+# Entferne weitere Duplikate
+    coords = unique_rows(coords)
 
 #########################################
 # Write Output
@@ -132,12 +149,16 @@ for coord in xyz_1st:
 print_1st = '\n'.join(lines_1st)
 
 
+no_core_atoms = len(lines_1st)
+no_atoms = no_core_atoms
+
+
 outlist = [print_1st]
 
 #print outlist
 outlines = '\n'.join(outlist)
 #print outlines
 
-outfile = open("%s%s_ico.xyz" %(atouter,atcore), mode="w")
+outfile = open("%s%s_ico_%d.xyz" %(atouter,atcore,no_atoms), mode="w")
 outfile.writelines(outlines)
 
