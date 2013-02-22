@@ -17,8 +17,8 @@ atouter = 'Ar' # atomtype of the outer shells
 rcore =  2.16 # radius of core atoms 
 router = 2.07 # radius of outer shell atoms
 
-n_core = 8 #number of atoms for the longest edge
-n_outer = 0
+n_core = 2 #number of atoms for the longest edge
+n_outer = 1
 
 ################## Definitions #####################################
 
@@ -138,12 +138,75 @@ for i in range (2,n_core+1):
 # Entferne Duplikate innerhalb der Liste
     unique = unique_rows(latest)
 
-
+# vereine die Koordianten der letzten Schicht mit allen anderen
     coords = np.vstack((coords,unique))
 
-# Entferne weitere Duplikate
-#    coords = unique_rows(coords)
-#    test = unique_rows(coords)
+
+
+##############################################
+##### Outer Atom Layers ######################
+##############################################
+for i in range (1,n_outer+1):
+    kante  = 2* rcore * (n_core-1) + 2*i*router
+
+# Die Ecken des Ikosaeders der entsprechenden Groesse
+    ecke1  = np.array([           0,    -kante/2, kante/2*phi])
+    ecke2  = np.array([           0,     kante/2, kante/2*phi])
+    ecke3  = np.array([           0,    -kante/2,-kante/2*phi])
+    ecke4  = np.array([           0,     kante/2,-kante/2*phi])
+    ecke5  = np.array([     kante/2,-kante/2*phi,           0])
+    ecke6  = np.array([     kante/2, kante/2*phi,           0])
+    ecke7  = np.array([    -kante/2,-kante/2*phi,           0])
+    ecke8  = np.array([    -kante/2, kante/2*phi,           0])
+    ecke9  = np.array([ kante/2*phi,           0,     kante/2])
+    ecke10 = np.array([ kante/2*phi,           0,    -kante/2])
+    ecke11 = np.array([-kante/2*phi,           0,     kante/2])
+    ecke12 = np.array([-kante/2*phi,           0,    -kante/2])
+
+    ecken = np.vstack((ecke1,ecke2,ecke3,ecke4,ecke5,ecke6,ecke7,\
+                       ecke8,ecke9,ecke10,ecke11,ecke12))
+
+    latest = ecken
+#    print latest
+
+    for j in range (0,20):
+        vec1 = ecken[surfaces[j,0] -1]
+        vec2 = ecken[surfaces[j,1] -1]
+        vec3 = ecken[surfaces[j,2] -1]
+
+        #print j+1
+        #print surfaces[j,0], surfaces[j,1], surfaces[j,2]
+
+#        print ' '.join(map(str, vec1))
+#        print ' '.join(map(str, vec2))
+#        print ' '.join(map(str, vec3))
+        normkante = (vec2-vec1) / np.linalg.norm(vec2-vec1)
+        normlauf  = (vec3-vec2) / np.linalg.norm(vec3-vec2)
+
+        for k in range (1,i):
+            kantatom = vec1 + (k * normkante * 2 * rcore)
+            latest = np.vstack((latest,kantatom))
+#            print vec1
+#            print kantatom
+
+            for l in range (1,k+1):
+                flatom = kantatom + l * normlauf * 2 * rcore
+                latest = np.vstack((latest,flatom))
+                #print kantatom
+
+
+# Entferne Duplikate innerhalb der Liste
+    unique = unique_rows(latest)
+
+    if i == 1:
+        coords2nd = unique
+    else:
+# vereine die Koordianten der letzten Schicht mit allen anderen
+        coords2nd = np.vstack((coords2nd,unique))
+
+
+
+
 
 #########################################
 # Write Output
@@ -153,6 +216,7 @@ for i in range (2,n_core+1):
 
 
 xyz_1st  = [vec2str(coord) for coord in coords]
+xyz_2nd  = [vec2str(coord) for coord in coords2nd]
 
 lines_1st = []
 for coord in xyz_1st:
@@ -160,12 +224,19 @@ for coord in xyz_1st:
     lines_1st.append(line)
 print_1st = '\n'.join(lines_1st)
 
+lines_2nd = []
+for coord in xyz_2nd:
+    line = '%s    %s' %(atouter,coord)
+    lines_2nd.append(line)
+print_2nd = '\n'.join(lines_2nd)
+
 
 no_core_atoms = len(lines_1st)
-no_atoms = no_core_atoms
+no_outer_atoms = len(lines_2nd)
+no_atoms = no_core_atoms + no_outer_atoms
 
 
-outlist = [print_1st]
+outlist = [print_1st,print_2nd]
 
 #print outlist
 outlines = '\n'.join(outlist)
