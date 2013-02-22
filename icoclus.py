@@ -12,13 +12,13 @@ import math
 
 ##################Input Variables ##################################
 atcore = 'Xe' # atomtype of the core atoms
-atouter = 'Ar' # atomtype of the outer shells
+atouter = 'O' # atomtype of the outer shells
 
 rcore =  2.16 # radius of core atoms 
 router = 2.07 # radius of outer shell atoms
 
-n_core = 2 #number of atoms for the longest edge
-n_outer = 1
+n_core = 3 #number of atoms for the longest edge
+n_outer = 2
 
 ################## Definitions #####################################
 
@@ -182,15 +182,16 @@ for i in range (1,n_outer+1):
 #        print ' '.join(map(str, vec3))
         normkante = (vec2-vec1) / np.linalg.norm(vec2-vec1)
         normlauf  = (vec3-vec2) / np.linalg.norm(vec3-vec2)
+        atdist    = kante / (n_core+i-1)
 
-        for k in range (1,i):
-            kantatom = vec1 + (k * normkante * 2 * rcore)
+        for k in range (1,n_core + i):
+            kantatom = vec1 + (k * normkante * atdist)
             latest = np.vstack((latest,kantatom))
 #            print vec1
 #            print kantatom
 
             for l in range (1,k+1):
-                flatom = kantatom + l * normlauf * 2 * rcore
+                flatom = kantatom + l * normlauf * atdist
                 latest = np.vstack((latest,flatom))
                 #print kantatom
 
