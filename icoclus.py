@@ -17,14 +17,14 @@ atouter = 'Ar' # atomtype of the outer shells
 rcore =  2.16 # radius of core atoms 
 router = 2.07 # radius of outer shell atoms
 
-n_core = 4 #number of atoms for the longest edge
+n_core = 8 #number of atoms for the longest edge
 n_outer = 0
 
 ################## Definitions #####################################
 
 phi = (1 + math.sqrt(5))/2
 
-thres = 1e-12
+thres = 1e-10
 
 # Definition of the surfaces
 surf1  = np.array([ 1, 2,11])
@@ -67,7 +67,7 @@ def vec2str(vec):
 def unique_rows(a):
 #    order = np.lexsort(a.T)
 #    a = a[order]
-    a = np.around(a,decimals=14)
+    a = np.around(a,decimals=10)
     a = a[np.lexsort(a.T)]
 #    a = a[a[:,2].argsort()]
 #    a = a[a[:,1].argsort()]
@@ -107,7 +107,7 @@ for i in range (2,n_core+1):
     latest = ecken
 #    print latest
 
-    for j in range (0,19):
+    for j in range (0,20):
         vec1 = ecken[surfaces[j,0] -1]
         vec2 = ecken[surfaces[j,1] -1]
         vec3 = ecken[surfaces[j,2] -1]
