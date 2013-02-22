@@ -65,8 +65,14 @@ def vec2str(vec):
 #    return unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
 
 def unique_rows(a):
-    order = np.lexsort(a.T)
-    a = a[order]
+#    order = np.lexsort(a.T)
+#    a = a[order]
+    a = np.around(a,decimals=14)
+    a = a[np.lexsort(a.T)]
+#    a = a[a[:,2].argsort()]
+#    a = a[a[:,1].argsort()]
+#    a = a[a[:,0].argsort()]
+#    print a
     diff = np.diff(a, axis=0)
     ui = np.ones(len(a), 'bool')
     ui[1:] = (diff > thres).any(axis=1) 
@@ -137,6 +143,7 @@ for i in range (2,n_core+1):
 
 # Entferne weitere Duplikate
 #    coords = unique_rows(coords)
+#    test = unique_rows(coords)
 
 #########################################
 # Write Output
