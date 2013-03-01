@@ -23,8 +23,6 @@ n_outer = 1
 ################## Definitions #####################################
 
 phi = (1 + math.sqrt(5))/2
-#scale = 2 * math.sin( 2* math.pi / 10)
-#scale = math.sqrt(1+phi**2)/2 * 2 * math.sin( 2* math.pi / 10)
 scale = 2.0 / math.sqrt(1+phi**2) # passt fuer einheitliche Atome
 
 thres = 1e-10
