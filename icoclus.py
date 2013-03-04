@@ -1,4 +1,4 @@
-#!/opt/local/bin/python
+#!/usr/bin/python
 
 ####################################################################
 # Purpose: Create xyz files of icosahedral cluster consisting of 1 #
@@ -12,17 +12,18 @@ import math
 
 ##################Input Variables ##################################
 atcore = 'Xe' # atomtype of the core atoms
-atouter = 'O' # atomtype of the outer shells
+atouter = 'Ar' # atomtype of the outer shells
 
 rcore =  2.16 # radius of core atoms 
-router = 2.07 # radius of outer shell atoms
+router = 1.88 # radius of outer shell atoms
 
 n_core = 3 #number of atoms for the longest edge
-n_outer = 2
+n_outer = 1
 
 ################## Definitions #####################################
 
 phi = (1 + math.sqrt(5))/2
+scale = 2.0 / math.sqrt(1+phi**2) # passt fuer einheitliche Atome
 
 thres = 1e-10
 
@@ -85,7 +86,7 @@ def unique_rows(a):
 #####  Build the core icosahedra #
 ##################################
 for i in range (2,n_core+1):
-    kante  = 2* rcore * (i-1)
+    kante  = 2* rcore * (i-1) * scale
 
 # Die Ecken des Ikosaeders der entsprechenden Groesse
     ecke1  = np.array([           0,    -kante/2, kante/2*phi])
@@ -124,13 +125,13 @@ for i in range (2,n_core+1):
         if (i > 2):
 
             for k in range (1,i):
-                kantatom = vec1 + (k * normkante * 2 * rcore)
+                kantatom = vec1 + (k * normkante * 2 * rcore * scale)
                 latest = np.vstack((latest,kantatom))
 #                print vec1
 #                print kantatom
                 
                 for l in range (1,k+1):
-                    flatom = kantatom + l * normlauf * 2 * rcore
+                    flatom = kantatom + l * normlauf * 2 * rcore * scale
                     latest = np.vstack((latest,flatom))
                     #print kantatom
 
@@ -147,7 +148,7 @@ for i in range (2,n_core+1):
 ##### Outer Atom Layers ######################
 ##############################################
 for i in range (1,n_outer+1):
-    kante  = 2* rcore * (n_core-1) + 2*i*router
+    kante  = (rcore * (2*n_core-1) + (2*i-1) *router) * scale
 
 # Die Ecken des Ikosaeders der entsprechenden Groesse
     ecke1  = np.array([           0,    -kante/2, kante/2*phi])
