@@ -17,7 +17,7 @@ atouter = 'Ar' # atomtype of the outer shells
 rcore =  2.16 # radius of core atoms 
 router = 1.88 # radius of outer shell atoms
 
-n_core = 3 #number of atoms for the longest edge
+n_core = 2 #number of atoms for the longest edge
 n_outer = 1
 
 ################## Definitions #####################################
