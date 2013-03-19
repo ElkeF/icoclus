@@ -11,14 +11,16 @@ import numpy as np
 import math
 
 ##################Input Variables ##################################
-atcore = 'Xe' # atomtype of the core atoms
-atouter = 'Ar' # atomtype of the outer shells
+atcore = 'Ar' # atomtype of the core atoms
+atouter = 'Ne' # atomtype of the outer shells
 
-rcore =  2.16 # radius of core atoms 
-router = 1.88 # radius of outer shell atoms
+rcore =  1.88 # radius of core atoms 
+router = 1.54 # radius of outer shell atoms
 
-n_core = 2 #number of atoms for the longest edge
-n_outer = 1
+n_core = 8 #number of atoms for the longest edge
+n_outer = raw_input('How many layers of atoms do you want to have? ')
+n_outer = int(n_outer)
+#n_outer = 1
 
 ################## Definitions #####################################
 
