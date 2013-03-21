@@ -2,7 +2,8 @@
 
 ####################################################################
 # Purpose: Create xyz files of icosahedral cluster consisting of 1 #
-#          or two different atom types                             #
+#          atom type surrounded by non complete shells of          #
+#          another type of atoms                                   #
 ####################################################################
 #                Elke Fasshauer                                    #
 ####################################################################
@@ -21,6 +22,8 @@ n_core = 8 #number of atoms for the longest edge
 n_outer = raw_input('How many layers of atoms do you want to have? ')
 n_outer = int(n_outer)
 #n_outer = 1
+
+no_surfaces = 2 + 1
 
 ################## Definitions #####################################
 
@@ -172,7 +175,7 @@ for i in range (1,n_outer+1):
     latest = ecken
 #    print latest
 
-    for j in range (0,20):
+    for j in range (0,no_surfaces):
         vec1 = ecken[surfaces[j,0] -1]
         vec2 = ecken[surfaces[j,1] -1]
         vec3 = ecken[surfaces[j,2] -1]
