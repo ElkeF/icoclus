@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/opt/local/bin/python
 
 ####################################################################
 # Purpose: Create xyz files of icosahedral cluster consisting of 1 #
