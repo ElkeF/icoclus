@@ -11,13 +11,13 @@ import numpy as np
 import math
 
 ##################Input Variables ##################################
-atcore = 'Ar' # atomtype of the core atoms
+atcore = 'Ne' # atomtype of the core atoms
 atouter = 'Ne' # atomtype of the outer shells
 
-rcore =  1.88 # radius of core atoms 
+rcore =  1.54 # radius of core atoms 
 router = 1.54 # radius of outer shell atoms
 
-n_core = 8 #number of atoms for the longest edge
+n_core = 3 #number of atoms for the longest edge
 n_outer = raw_input('How many layers of atoms do you want to have? ')
 n_outer = int(n_outer)
 #n_outer = 1
@@ -35,19 +35,19 @@ surf2  = np.array([ 1, 2, 9])
 surf3  = np.array([ 1, 7,11])
 surf4  = np.array([ 1, 5, 7])
 surf5  = np.array([ 1, 5, 9])
-surf6  = np.array([ 2, 6, 8])
-surf7  = np.array([ 2, 8,11])
-surf8  = np.array([ 2, 6, 9])
-surf9  = np.array([ 3, 4,10])
-surf10 = np.array([ 3, 4,12])
-surf11 = np.array([ 3, 5,10])
-surf12 = np.array([ 3, 5, 7])
-surf13 = np.array([ 3, 7,12])
-surf14 = np.array([ 4, 6, 8])
-surf15 = np.array([ 4, 6,10])
-surf16 = np.array([ 4, 8,12])
-surf17 = np.array([ 5, 9,10])
-surf18 = np.array([ 6, 9,10])
+surf6  = np.array([ 2, 6, 9])
+surf7  = np.array([ 2, 6, 8])
+surf8  = np.array([ 2, 8,11])
+surf9  = np.array([ 5, 9,10])
+surf10 = np.array([ 6, 9,10])                                                         
+surf11 = np.array([ 3, 5,10])                                                         
+surf12 = np.array([ 3, 5, 7])                                                         
+surf13 = np.array([ 3, 4,10])                                                         
+surf14 = np.array([ 3, 4,12])                                                         
+surf15 = np.array([ 3, 7,12])                                                         
+surf16 = np.array([ 4, 6,10])                                                         
+surf17 = np.array([ 4, 6, 8])                                                         
+surf18 = np.array([ 4, 8,12])                                                         
 surf19 = np.array([ 7,11,12])
 surf20 = np.array([ 8,11,12])
 
