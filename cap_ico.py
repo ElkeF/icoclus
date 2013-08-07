@@ -23,7 +23,6 @@ n_caps = raw_input('How many caps do you want to have? ')
 n_caps = int(n_caps)
 n_outer = n_core - 1
 
-#no_surfaces = 2 + 1
 
 ################## Definitions #####################################
 
