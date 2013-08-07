@@ -177,7 +177,7 @@ for i in range (1,n_outer+1):
 #    print latest
 
     for n in range (0,n_caps):
-        j = caps[n]
+        j = caps[n] - 1
         vec1 = ecken[surfaces[j,0] -1]
         vec2 = ecken[surfaces[j,1] -1]
         vec3 = ecken[surfaces[j,2] -1]
