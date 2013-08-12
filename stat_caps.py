@@ -22,13 +22,14 @@ router = 1.54 # radius of outer shell atoms
 n_core = 2 #number of atoms for the longest edge
 n_outer = n_core - 1
 
-n_caps = 5
+n_caps = 2
 
 combis = []
 for count in itertools.combinations(range(1,21), n_caps):
     entry = list(count)
     combis.append(entry)
 n_combis = len(combis)
+#print n_combis
 
 ################## Definitions #####################################
 
@@ -191,7 +192,6 @@ found       = 0
 
 for combi in range (0,n_combis):
     caps = combis[combi]
-    #print combi
     latest = np.vstack((ecke1,ecke2))
     
     for n in range (0,n_caps):
@@ -240,7 +240,7 @@ for combi in range (0,n_combis):
 
 # Entferne Duplikate innerhalb der Liste
     unique = unique_rows(latest)
-#    print latest
+    print combi
 
     for h in range(0,len(latest)):
         latest = np.delete(latest,0,0)
@@ -263,7 +263,10 @@ for combi in range (0,n_combis):
             bnorm = np.linalg.norm(vecb)
             cos_theta = np.dot(veca,vecb)/(anorm*bnorm)
             if (math.fabs(math.fabs(cos_theta)-1.0) < 1E-12):
-                theta = 0.0
+                if cos_theta > 0.0:
+                    theta = 0.0
+                else:
+                    theta = math.pi
             else:
                 theta = np.arccos(cos_theta)
             angles.append(theta)
