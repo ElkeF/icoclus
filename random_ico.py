@@ -19,8 +19,8 @@ atouter = 'Ne' # atomtype of the outer shells
 rcore =  1.88 # radius of core atoms 
 router = 1.54 # radius of outer shell atoms
 
-n_core = 4 #number of atoms for the longest edge
-relation = 8.5 #nc_atoms/no_atoms
+n_core = 2 #number of atoms for the longest edge
+ratio = 6.5 #nc_atoms/no_atoms
 
 n_outer = 1
 ################## Definitions #####################################
@@ -211,15 +211,21 @@ for i in range (1,n_outer+1):
 
     if i == 1:
         coords2nd = unique
-        no_atoms  = nc_atoms / relation
+        no_atoms  = float(nc_atoms) / ratio
         no_atoms  = int(no_atoms)
         for j in range(0,len(coords2nd)):
             list_keep.append(j)
         list_keep = random.sample(list_keep,no_atoms)
-        temp = np.vstack((coords2nd[list_keep[0]],coords2nd[list_keep[1]]))
-        for j in range(2,no_atoms):
-            temp = np.vstack((temp,coords2nd[list_keep[j]]))
-        coords2nd = temp
+        if no_atoms == 1:
+            temp = np.array([0.0,0.0,0.0])
+            temp = np.vstack((temp,coords2nd[list_keep[0]]))
+            coords2nd = temp
+            coords2nd = np.delete(coords2nd,0,0)
+        else:
+            temp = np.vstack((coords2nd[list_keep[0]],coords2nd[list_keep[1]]))
+            for j in range(2,no_atoms):
+                temp = np.vstack((temp,coords2nd[list_keep[j]]))
+            coords2nd = temp
        # coords2nd = np.random.choice(coords2nd,no_atoms,replace=False)
     else:
 # vereine die Koordianten der letzten Schicht mit allen anderen
