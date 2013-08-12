@@ -20,20 +20,15 @@ rcore =  1.88 # radius of core atoms
 router = 1.54 # radius of outer shell atoms
 
 n_core = 2 #number of atoms for the longest edge
-#n_core = raw_input('How many core layers do you want to have? ')
-#n_core = int(n_core)
 n_outer = n_core - 1
 
-#caps   = [3,6,10]
-#n_caps = len(caps)
-n_caps = 3
+n_caps = 5
 
 combis = []
 for count in itertools.combinations(range(1,21), n_caps):
     entry = list(count)
     combis.append(entry)
 n_combis = len(combis)
-#print combis
 
 ################## Definitions #####################################
 
@@ -196,7 +191,7 @@ found       = 0
 
 for combi in range (0,n_combis):
     caps = combis[combi]
-    #print caps
+    #print combi
     latest = np.vstack((ecke1,ecke2))
     
     for n in range (0,n_caps):
@@ -280,7 +275,10 @@ for combi in range (0,n_combis):
         all_numbers.append(1)
     else:
         for compare in range(0,nr_checked):
-            vecc = all_angles[compare]
+            if nr_checked == 1:
+                vecc = all_angles
+            else:
+                vecc = all_angles[compare]
             vecd = npangles - vecc
             dnorm = np.linalg.norm(vecd)
             if dnorm < 1.0E-8 :
@@ -299,41 +297,5 @@ for combi in range (0,n_combis):
 for a in range (0,len(all_numbers)):
     print all_numbers[a], all_combis[a], all_angles[a]
 
-
-#########################################
-# Write Output
-#########################################
-
-
-
-
-xyz_1st  = [vec2str(coord) for coord in coords]
-xyz_2nd  = [vec2str(coord) for coord in coords2nd]
-
-lines_1st = []
-for coord in xyz_1st:
-    line = '%s    %s' %(atcore,coord)
-    lines_1st.append(line)
-print_1st = '\n'.join(lines_1st)
-
-lines_2nd = []
-for coord in xyz_2nd:
-    line = '%s    %s' %(atouter,coord)
-    lines_2nd.append(line)
-print_2nd = '\n'.join(lines_2nd)
-
-
-no_core_atoms = len(lines_1st)
-no_outer_atoms = len(lines_2nd)
-no_atoms = no_core_atoms + no_outer_atoms
-
-
-outlist = [print_1st,print_2nd]
-
-#print outlist
-outlines = '\n'.join(outlist)
-#print outlines
-
-outfile = open("%s%s_ico_%d.xyz" %(atouter,atcore,no_atoms), mode="w")
-outfile.writelines(outlines)
+print len(all_numbers)
 
