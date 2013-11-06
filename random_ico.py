@@ -19,10 +19,13 @@ atouter = 'O' # atomtype of the outer shells
 rcore =  1.88 # radius of core atoms 
 router = 1.54 # radius of outer shell atoms
 
-n_core = 3 #number of atoms for the longest edge
-ratio = 0.8868 #nc_atoms/no_atoms
+n_core = 5 #number of atoms for the longest edge
+n_sec  = 0 # number of complete shells of second atmo type
+ratio = 3.8868 #nc_atoms/no_atoms
 
-n_outer = 1
+n_outer = 1 # do not change
+
+no_sec  = 0 # might be changed throughout the script
 ################## Definitions #####################################
 
 phi = (1 + math.sqrt(5))/2
@@ -149,12 +152,80 @@ for i in range (2,n_core+1):
 nc_atoms = len(coords)
 
 
+#############################################                      
+##### Layers of second atom type ############                      
+#############################################                      
+if (n_sec > 0):
+    for i in range (1,n_sec+1):                                        
+        kante = kante  = (rcore * (2*n_core-1) + (2*i-1) *router) * scale
+                                                                       
+    # Die Ecken des Ikosaeders der entsprechenden Groesse              
+        ecke1  = np.array([           0,    -kante/2, kante/2*phi])    
+        ecke2  = np.array([           0,     kante/2, kante/2*phi])    
+        ecke3  = np.array([           0,    -kante/2,-kante/2*phi])    
+        ecke4  = np.array([           0,     kante/2,-kante/2*phi])    
+        ecke5  = np.array([     kante/2,-kante/2*phi,           0])    
+        ecke6  = np.array([     kante/2, kante/2*phi,           0])    
+        ecke7  = np.array([    -kante/2,-kante/2*phi,           0])    
+        ecke8  = np.array([    -kante/2, kante/2*phi,           0])    
+        ecke9  = np.array([ kante/2*phi,           0,     kante/2])    
+        ecke10 = np.array([ kante/2*phi,           0,    -kante/2])    
+        ecke11 = np.array([-kante/2*phi,           0,     kante/2])    
+        ecke12 = np.array([-kante/2*phi,           0,    -kante/2])    
+                                                                       
+        ecken = np.vstack((ecke1,ecke2,ecke3,ecke4,ecke5,ecke6,ecke7,\
+                           ecke8,ecke9,ecke10,ecke11,ecke12))          
+                                                                       
+        latest = ecken                                                 
+        #print latest                                                  
+                                                                       
+        for j in range (0,20):                                         
+            vec1 = ecken[surfaces[j,0] -1]                             
+            vec2 = ecken[surfaces[j,1] -1]                             
+            vec3 = ecken[surfaces[j,2] -1]                             
+                                                                       
+            #print j+1                                                 
+            #print surfaces[j,0], surfaces[j,1], surfaces[j,2]         
+                                                                       
+    #        print ' '.join(map(str, vec1))                            
+    #        print ' '.join(map(str, vec2))                            
+    #        print ' '.join(map(str, vec3))                            
+            normkante = (vec2-vec1) / np.linalg.norm(vec2-vec1)        
+            normlauf  = (vec3-vec2) / np.linalg.norm(vec3-vec2)        
+            atdist    = kante / (n_core+i-1)                           
+                                                                       
+                                                                       
+            for k in range (1,n_core + i):                             
+                kantatom = vec1 + (k * normkante * atdist)             
+                latest = np.vstack((latest,kantatom))                  
+    #            print vec1                                            
+    #            print kantatom                                   
+    
+                for l in range (1,k+1):                                
+                    flatom = kantatom + l * normlauf * atdist          
+                    latest = np.vstack((latest,flatom))                
+                    #print kantatom                                    
+                                                                       
+                                                                       
+    # Entferne Duplikate innerhalb der Liste                           
+        unique = unique_rows(latest)                                   
+                                                                       
+        if i == 1:                                                     
+            coords2nd = unique                                         
+        else:                                                          
+    # vereine die Koordianten der letzten Schicht mit allen anderen    
+            coords2nd = np.vstack((coords2nd,unique))                  
+    
+    no_sec = len(coords2nd)
+    print no_sec
+                                                                       
+    #    print coords2nd        
 
 ##############################################
 ##### Outer Atom Layers ######################
 ##############################################
 for i in range (1,n_outer+1):
-    kante  = (rcore * (2*n_core-1) + (2*i-1) *router) * scale
+    kante  = (rcore * (2*n_core-1) + router * (2*n_sec) + (2*i-1) *router) * scale
 
 # Die Ecken des Ikosaeders der entsprechenden Groesse
     ecke1  = np.array([           0,    -kante/2, kante/2*phi])
@@ -189,9 +260,9 @@ for i in range (1,n_outer+1):
 #        print ' '.join(map(str, vec3))
         normkante = (vec2-vec1) / np.linalg.norm(vec2-vec1)
         normlauf  = (vec3-vec2) / np.linalg.norm(vec3-vec2)
-        atdist    = kante / (n_core+i-1)
+        atdist    = kante / (n_core+n_sec+i-1)
 
-        for k in range (1,n_core + i):
+        for k in range (1,n_core + n_sec + i):
             kantatom = vec1 + (k * normkante * atdist)
             latest = np.vstack((latest,kantatom))
 #            print vec1
@@ -210,23 +281,26 @@ for i in range (1,n_outer+1):
     random.seed()
 
     if i == 1:
-        coords2nd = unique
         no_atoms  = float(nc_atoms) / ratio
-        no_atoms  = int(no_atoms)
-        for j in range(0,len(coords2nd)):
+        no_atoms  = int(no_atoms) - no_sec
+        for j in range(0,len(unique)):
             list_keep.append(j)
         list_keep = random.sample(list_keep,no_atoms)
         if no_atoms == 1:
             temp = np.array([0.0,0.0,0.0])
-            temp = np.vstack((temp,coords2nd[list_keep[0]]))
-            coords2nd = temp
-            coords2nd = np.delete(coords2nd,0,0)
+            temp = np.vstack((temp,unique[list_keep[0]]))
+            unique = temp
+            unique = np.delete(unique,0,0)
         else:
-            temp = np.vstack((coords2nd[list_keep[0]],coords2nd[list_keep[1]]))
+            temp = np.vstack((unique[list_keep[0]],unique[list_keep[1]]))
             for j in range(2,no_atoms):
-                temp = np.vstack((temp,coords2nd[list_keep[j]]))
-            coords2nd = temp
+                temp = np.vstack((temp,unique[list_keep[j]]))
+            unique = temp
        # coords2nd = np.random.choice(coords2nd,no_atoms,replace=False)
+        if (n_sec == 0 and i == 1):
+            coords2nd = unique
+        else:
+            coords2nd = np.vstack((coords2nd,unique))
     else:
 # vereine die Koordianten der letzten Schicht mit allen anderen
         coords2nd = np.vstack((coords2nd,unique))
