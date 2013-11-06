@@ -14,13 +14,13 @@ import random
 
 ##################Input Variables ##################################
 atcore = 'Ar' # atomtype of the core atoms
-atouter = 'Ne' # atomtype of the outer shells
+atouter = 'O' # atomtype of the outer shells
 
 rcore =  1.88 # radius of core atoms 
 router = 1.54 # radius of outer shell atoms
 
-n_core = 2 #number of atoms for the longest edge
-ratio = 6.5 #nc_atoms/no_atoms
+n_core = 3 #number of atoms for the longest edge
+ratio = 0.8868 #nc_atoms/no_atoms
 
 n_outer = 1
 ################## Definitions #####################################

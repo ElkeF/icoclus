@@ -13,17 +13,17 @@ import math
 
 ##################Input Variables ##################################
 atcore = 'Ar' # atomtype of the core atoms
-atouter = 'Ne' # atomtype of the outer shells
+atouter = 'O' # atomtype of the outer shells
 
 rcore =  1.88 # radius of core atoms 
 router = 1.54 # radius of outer shell atoms
 
-#n_core = 5 #number of atoms for the longest edge
-n_core = raw_input('How many core layers do you want to have? ')
-n_core = int(n_core)
+n_core = 4 #number of atoms for the longest edge
+#n_core = raw_input('How many core layers do you want to have? ')
+#n_core = int(n_core)
 n_outer = n_core - 1
 
-caps   = [1,3,6,10]
+caps   = [1,5]
 n_caps = len(caps)
 
 ################## Definitions #####################################

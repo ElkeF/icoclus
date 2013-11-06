@@ -13,7 +13,7 @@ import math
 
 ##################Input Variables ##################################
 atcore = 'Ar' # atomtype of the core atoms
-atouter = 'Ne' # atomtype of the outer shells
+atouter = 'O' # atomtype of the outer shells
 
 rcore =  1.88 # radius of core atoms 
 router = 1.54 # radius of outer shell atoms
@@ -23,7 +23,7 @@ n_outer = raw_input('How many layers of atoms do you want to have? ')
 n_outer = int(n_outer)
 #n_outer = 1
 
-no_surfaces = 2 + 1
+no_surfaces = 5 + 1
 
 ################## Definitions #####################################
 
