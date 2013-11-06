@@ -6,7 +6,8 @@
 #          another type of atoms                                   #
 ####################################################################
 #                Elke Fasshauer                                    #
-####################################################################
+######################################################################
+
 
 import numpy as np
 import math
@@ -24,7 +25,7 @@ n_outer = 1 # don't change
 
 #no_surfaces = 3 + 1
 no_surfaces = raw_input('How many surfaces do you want to be covered? ')
-no_surfaces = int(n_outer)
+no_surfaces = int(no_surfaces)
 
 ################## Definitions #####################################
 
