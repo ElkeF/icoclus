@@ -6,7 +6,8 @@
 #          another type of atoms                                   #
 ####################################################################
 #                Elke Fasshauer                                    #
-####################################################################
+######################################################################
+
 
 import numpy as np
 import math
@@ -20,11 +21,11 @@ router = 1.54 # radius of outer shell atoms
 
 n_core = 3 #number of atoms for the longest edge
 n_sec = 2 # number of complete layers of the second atom type
-#n_outer = raw_input('How many layers of atoms do you want to have? ')
-#n_outer = int(n_outer)
 n_outer = 1 # don't change
 
-no_surfaces = 3 + 1
+#no_surfaces = 3 + 1
+no_surfaces = raw_input('How many surfaces do you want to be covered? ')
+no_surfaces = int(no_surfaces)
 
 ################## Definitions #####################################
 
