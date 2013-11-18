@@ -19,7 +19,7 @@ atouter = 'O' # atomtype of the outer shells
 rcore =  1.88 # radius of core atoms 
 router = 1.54 # radius of outer shell atoms
 
-n_core = 3 #number of atoms for the longest edge
+n_core = 1 #number of atoms for the longest edge
 n_sec = 2 # number of complete layers of the second atom type
 n_outer = 1 # don't change
 
@@ -92,62 +92,63 @@ def unique_rows(a):
 ##################################
 #####  Build the core icosahedra #
 ##################################
-for i in range (2,n_core+1):
-    kante  = 2* rcore * (i-1) * scale
-
-# Die Ecken des Ikosaeders der entsprechenden Groesse
-    ecke1  = np.array([           0,    -kante/2, kante/2*phi])
-    ecke2  = np.array([           0,     kante/2, kante/2*phi])
-    ecke3  = np.array([           0,    -kante/2,-kante/2*phi])
-    ecke4  = np.array([           0,     kante/2,-kante/2*phi])
-    ecke5  = np.array([     kante/2,-kante/2*phi,           0])
-    ecke6  = np.array([     kante/2, kante/2*phi,           0])
-    ecke7  = np.array([    -kante/2,-kante/2*phi,           0])
-    ecke8  = np.array([    -kante/2, kante/2*phi,           0])
-    ecke9  = np.array([ kante/2*phi,           0,     kante/2])
-    ecke10 = np.array([ kante/2*phi,           0,    -kante/2])
-    ecke11 = np.array([-kante/2*phi,           0,     kante/2])
-    ecke12 = np.array([-kante/2*phi,           0,    -kante/2])
-
-    ecken = np.vstack((ecke1,ecke2,ecke3,ecke4,ecke5,ecke6,ecke7,\
-                       ecke8,ecke9,ecke10,ecke11,ecke12))
-
-    latest = ecken
-#    print latest
-
-    for j in range (0,20):
-        vec1 = ecken[surfaces[j,0] -1]
-        vec2 = ecken[surfaces[j,1] -1]
-        vec3 = ecken[surfaces[j,2] -1]
-
-        #print j+1
-        #print surfaces[j,0], surfaces[j,1], surfaces[j,2]
-
-#        print ' '.join(map(str, vec1))
-#        print ' '.join(map(str, vec2))
-#        print ' '.join(map(str, vec3))
-        normkante = (vec2-vec1) / np.linalg.norm(vec2-vec1)
-        normlauf  = (vec3-vec2) / np.linalg.norm(vec3-vec2)
-
-        if (i > 2):
-
-            for k in range (1,i):
-                kantatom = vec1 + (k * normkante * 2 * rcore * scale)
-                latest = np.vstack((latest,kantatom))
-#                print vec1
-#                print kantatom
-                
-                for l in range (1,k+1):
-                    flatom = kantatom + l * normlauf * 2 * rcore * scale
-                    latest = np.vstack((latest,flatom))
-                    #print kantatom
-
-
-# Entferne Duplikate innerhalb der Liste
-    unique = unique_rows(latest)
-
-# vereine die Koordianten der letzten Schicht mit allen anderen
-    coords = np.vstack((coords,unique))
+if (n_core > 1):
+    for i in range (2,n_core+1):
+        kante  = 2* rcore * (i-1) * scale
+    
+    # Die Ecken des Ikosaeders der entsprechenden Groesse
+        ecke1  = np.array([           0,    -kante/2, kante/2*phi])
+        ecke2  = np.array([           0,     kante/2, kante/2*phi])
+        ecke3  = np.array([           0,    -kante/2,-kante/2*phi])
+        ecke4  = np.array([           0,     kante/2,-kante/2*phi])
+        ecke5  = np.array([     kante/2,-kante/2*phi,           0])
+        ecke6  = np.array([     kante/2, kante/2*phi,           0])
+        ecke7  = np.array([    -kante/2,-kante/2*phi,           0])
+        ecke8  = np.array([    -kante/2, kante/2*phi,           0])
+        ecke9  = np.array([ kante/2*phi,           0,     kante/2])
+        ecke10 = np.array([ kante/2*phi,           0,    -kante/2])
+        ecke11 = np.array([-kante/2*phi,           0,     kante/2])
+        ecke12 = np.array([-kante/2*phi,           0,    -kante/2])
+    
+        ecken = np.vstack((ecke1,ecke2,ecke3,ecke4,ecke5,ecke6,ecke7,\
+                           ecke8,ecke9,ecke10,ecke11,ecke12))
+    
+        latest = ecken
+    #    print latest
+    
+        for j in range (0,20):
+            vec1 = ecken[surfaces[j,0] -1]
+            vec2 = ecken[surfaces[j,1] -1]
+            vec3 = ecken[surfaces[j,2] -1]
+    
+            #print j+1
+            #print surfaces[j,0], surfaces[j,1], surfaces[j,2]
+    
+    #        print ' '.join(map(str, vec1))
+    #        print ' '.join(map(str, vec2))
+    #        print ' '.join(map(str, vec3))
+            normkante = (vec2-vec1) / np.linalg.norm(vec2-vec1)
+            normlauf  = (vec3-vec2) / np.linalg.norm(vec3-vec2)
+    
+            if (i > 2):
+    
+                for k in range (1,i):
+                    kantatom = vec1 + (k * normkante * 2 * rcore * scale)
+                    latest = np.vstack((latest,kantatom))
+    #                print vec1
+    #                print kantatom
+                    
+                    for l in range (1,k+1):
+                        flatom = kantatom + l * normlauf * 2 * rcore * scale
+                        latest = np.vstack((latest,flatom))
+                        #print kantatom
+    
+    
+    # Entferne Duplikate innerhalb der Liste
+        unique = unique_rows(latest)
+    
+    # vereine die Koordianten der letzten Schicht mit allen anderen
+        coords = np.vstack((coords,unique))
 
 
 #############################################
@@ -299,8 +300,12 @@ for i in range (1,n_outer+1):
 
 
 
+if (n_core == 1):
+    xyz_1st = []
+    xyz_1st.append(vec2str(coords))
+else:
+    xyz_1st  = [vec2str(coord) for coord in coords]
 
-xyz_1st  = [vec2str(coord) for coord in coords]
 xyz_2nd  = [vec2str(coord) for coord in coords2nd]
 
 lines_1st = []
