@@ -11,16 +11,16 @@ import numpy as np
 import math
 
 ##################Input Variables ##################################
-atcore = 'Ar' # atomtype of the core atoms
-atouter = 'O' # atomtype of the outer shells
+atcore = 'Xe' # atomtype of the core atoms
+atouter = 'Ar' # atomtype of the outer shells
 
-rcore =  1.88 # radius of core atoms 
-router = 1.54 # radius of outer shell atoms
+rcore =  2.16 # radius of core atoms 
+router = 1.88 # radius of outer shell atoms
 
-n_core = 1 #number of atoms for the longest edge
+n_core = 7 #number of atoms for the longest edge
 #n_outer = raw_input('How many layers of atoms do you want to have? ')
 #n_outer = int(n_outer)
-n_outer = 1
+n_outer = 5
 
 ################## Definitions #####################################
 
@@ -145,8 +145,6 @@ if (n_core > 1):
     # vereine die Koordianten der letzten Schicht mit allen anderen
         coords = np.vstack((coords,unique))
 
-
-
 ##############################################
 ##### Outer Atom Layers ######################
 ##############################################
@@ -251,6 +249,6 @@ outlist = [print_1st,print_2nd]
 outlines = '\n'.join(outlist)
 #print outlines
 
-outfile = open("%s%s_ico_%d.xyz" %(atouter,atcore,no_atoms), mode="w")
+outfile = open("%s%s_ico_c%dl%d.xyz" %(atouter,atcore,n_core,n_outer), mode="w")
 outfile.writelines(outlines)
 
