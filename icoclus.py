@@ -1,4 +1,4 @@
-#!/opt/local/bin/python
+#!/bin/python
 
 ####################################################################
 # Purpose: Create xyz files of icosahedral cluster consisting of 1 #
@@ -11,16 +11,16 @@ import numpy as np
 import math
 
 ##################Input Variables ##################################
-atcore = 'Xe' # atomtype of the core atoms
-atouter = 'Ar' # atomtype of the outer shells
+atcore = 'Ar' # atomtype of the core atoms
+atouter = 'Ne' # atomtype of the outer shells
 
-rcore =  2.16 # radius of core atoms 
-router = 1.88 # radius of outer shell atoms
+rcore =  1.88 # radius of core atoms 
+router = 1.54 # radius of outer shell atoms
 
-n_core = 7 #number of atoms for the longest edge
+n_core = 1 #number of atoms for the longest edge
 #n_outer = raw_input('How many layers of atoms do you want to have? ')
 #n_outer = int(n_outer)
-n_outer = 5
+n_outer = 1
 
 ################## Definitions #####################################
 
@@ -210,7 +210,6 @@ for i in range (1,n_outer+1):
 
 
 
-
 #########################################
 # Write Output
 #########################################
@@ -251,4 +250,39 @@ outlines = '\n'.join(outlist)
 
 outfile = open("%s%s_ico_c%dl%d.xyz" %(atouter,atcore,n_core,n_outer), mode="w")
 outfile.writelines(outlines)
+
+
+
+# Sperical coordinates for Lenz
+
+spherfile = open("%s%s_ico_c%dl%d.spherical" %(atouter,atcore,n_core,n_outer), mode="w")
+
+#coords_spherical = []
+for i in range(0,len(coords2nd)):
+    x = coords2nd[i][0]
+    y = coords2nd[i][1]
+    z = coords2nd[i][2]
+    r = np.sqrt(x**2 + y**2 + z**2)
+    phi = math.degrees(math.atan2(y,x))
+    theta = math.degrees(np.arccos(z/r))
+
+    tmp_vec = np.array([r, theta, phi])
+
+    if i == 0:
+        vec1 = tmp_vec
+    elif i == 1:
+        coords_spherical = np.vstack((vec1,tmp_vec))
+    else:
+        coords_spherical = np.vstack((coords_spherical,tmp_vec))
+
+xyz_2nd  = [vec2str(coord) for coord in coords_spherical]
+
+lines_2nd = []
+for coord in xyz_2nd:
+    line = '%s    %s' %(atouter,coord)
+    lines_2nd.append(line)
+outlines = '\n'.join(lines_2nd)
+    
+spherfile.writelines(outlines)
+
 
