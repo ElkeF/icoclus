@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python
 
 ####################################################################
 # Purpose: Create xyz files of icosahedral cluster consisting of 1 #
@@ -20,7 +20,7 @@ router = 1.54 # radius of outer shell atoms
 n_core = 1 #number of atoms for the longest edge
 #n_outer = raw_input('How many layers of atoms do you want to have? ')
 #n_outer = int(n_outer)
-n_outer = 1
+n_outer = 2
 
 ################## Definitions #####################################
 
@@ -265,6 +265,8 @@ for i in range(0,len(coords2nd)):
     r = np.sqrt(x**2 + y**2 + z**2)
     phi = math.degrees(math.atan2(y,x))
     theta = math.degrees(np.arccos(z/r))
+    if (phi < 0):
+        phi = phi + 360
 
     tmp_vec = np.array([r, theta, phi])
 
